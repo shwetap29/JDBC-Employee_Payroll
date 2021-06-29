@@ -78,7 +78,11 @@ public class EmployeePayrollService {
                 .orElse(null);
     }
 
-    void writeEmployeeData(IOService ioService) {
+    public void addEmployeeToPayroll(String name, double salary, LocalDate startDate, char gender) {
+        employeePayrollList.add(employeePayrollDBService.addEmployeeToPayroll(name,salary,startDate,gender));
+    }
+
+    public void writeEmployeeData(IOService ioService) {
         if (ioService.equals(IOService.CONSOLE_IO))
             System.out.println("\nWriting Employee Payroll Roaster to Console\n" + employeePayrollList);
         else if(ioService.equals(IOService.FILE_IO))
