@@ -10,6 +10,7 @@ private PreparedStatement employeePayrollDataStatement;
 private static EmployeePayrollDBService employeePayrollDBService;
 private EmployeePayrollDBService(){
 }
+
 public static EmployeePayrollDBService getInstance() {
     if (employeePayrollDBService == null)
         employeePayrollDBService = new EmployeePayrollDBService();
@@ -39,6 +40,25 @@ private Connection getConnection() throws SQLException {
         }
         return employeePayrollList;
     }
+
+    public List<EmployeePayrollData> getEmployeePayrollForDataRange(LocalDate startDate, LocalDate endDate) {
+        String sql = String.format("SELECT * FROM employee_payroll WHERE START BETWEEN '%s' AND '%s';",
+                Date.valueOf(startDate),Date.valueOf(endDate));
+        return this.getEmployeePayrollDataUsingDB(sql);
+    }
+
+    private List<EmployeePayrollData> getEmployeePayrollDataUsingDB(String sql) {
+        List<EmployeePayrollData> employeePayrollList = new ArrayList<>();
+        try (Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            employeePayrollList = this.getEmployeePayrollData(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employeePayrollList;
+}
+
     public List<EmployeePayrollData> getEmployeePayrollData(String name) {
         List<EmployeePayrollData> employeePayrollList = null;
         if (this.employeePayrollDataStatement == null)
@@ -94,5 +114,4 @@ private Connection getConnection() throws SQLException {
     }
     return 0;
     }
-
 }

@@ -37,5 +37,13 @@ public class EmployeePayrollFileIOService {
         }
         return entries;
     }
+
+    public void readDataFromFile() {
+        try {
+            Files.lines(new File(PAYROLL_FILE_NAME).toPath()).map(line -> line.trim()).forEach(line -> System.out.println(line));
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
+}
 

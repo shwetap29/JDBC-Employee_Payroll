@@ -2,6 +2,8 @@ package com.bridgelabz;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,9 +38,19 @@ public class EmployeePayrollServiceTest {
     public void givenNewSalaryForEmployee_WhenUpdated_ShouldSyncWithDB() {
            EmployeePayrollService employeePayrollService = new EmployeePayrollService();
            List<EmployeePayrollData> employeePayrollData = employeePayrollService.readEmployeePayrollData(DB_IO);
-           employeePayrollService.updateEmployeeSalary("Terisa",3000000.00);
-           boolean result = employeePayrollService.checkEmployeePayrollInSyncWithDB("Terisa");
+           employeePayrollService.updateEmployeeSalary("Charlie",3000000.00);
+           boolean result = employeePayrollService.checkEmployeePayrollInSyncWithDB("Charlie");
            Assert.assertTrue(result);
 
+    }
+
+    @Test
+    public void givenDataRange_WhenRetrieved_ShouldMatchEmployeeCount() {
+           EmployeePayrollService employeePayrollService = new EmployeePayrollService();
+           employeePayrollService.readEmployeePayrollData(DB_IO);
+        LocalDate startDate = LocalDate.of(2018,01,01);
+        LocalDate endDate = LocalDate.now();
+        List<EmployeePayrollData> employeePayrollData = employeePayrollService.readEmployeePayrollDataRange(DB_IO,startDate,endDate);
+        Assert.assertEquals(3,employeePayrollData.size());
     }
 }

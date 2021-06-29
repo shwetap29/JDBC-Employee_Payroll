@@ -1,6 +1,7 @@
 package com.bridgelabz;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +16,7 @@ public class EmployeePayrollService {
 
     public EmployeePayrollService() {
         employeePayrollDBService = EmployeePayrollDBService.getInstance();
+
     }
 
     public EmployeePayrollService(List<EmployeePayrollData>employeePayrollList) {
@@ -45,6 +47,13 @@ public class EmployeePayrollService {
         this.employeePayrollList =  employeePayrollDBService.readData();
         return this.employeePayrollList;
     }
+
+    public List<EmployeePayrollData> readEmployeePayrollDataRange(IOService ioService, LocalDate startDate, LocalDate endDate) {
+    if(ioService.equals(IOService.DB_IO))
+            return employeePayrollDBService.getEmployeePayrollForDataRange(startDate,endDate);
+        return null;
+}
+
 
     public boolean checkEmployeePayrollInSyncWithDB(String name) {
         List<EmployeePayrollData> employeePayrollDataList = employeePayrollDBService.getInstance().getEmployeePayrollData(name);
@@ -81,6 +90,9 @@ public class EmployeePayrollService {
             return new EmployeePayrollFileIOService().countEntries();
         return 0;
     }
-
-
+    public void readDataFromFile(IOService ioService) {
+        if (ioService.equals(IOService.CONSOLE_IO)) {
+            new EmployeePayrollFileIOService().readDataFromFile();
+        }
+    }
 }
